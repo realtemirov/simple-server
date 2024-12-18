@@ -65,7 +65,7 @@ func main() {
 func dbConn() (*sql.DB, error) {
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
 		"password=%s dbname=%s sslmode=disable",
-		"localhost", 5432, "postgres", "postgres", "postgres")
+		"postgres", 5432, "postgres", "postgres", "postgres")
 
 	db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
@@ -84,9 +84,9 @@ func dbConn() (*sql.DB, error) {
 
 func redisConn() (*redis.Client, error) {
 	rdb := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379", // Redis server address
-		Password: "",               // No password set
-		DB:       0,                // Default database
+		Addr:     "redis:6379", // Redis server address
+		Password: "",           // No password set
+		DB:       0,            // Default database
 	})
 
 	// Ping the Redis server to test the connection
@@ -123,7 +123,7 @@ func (a *App) getMethod(w http.ResponseWriter, r *http.Request) {
 		if err := cmd.Err(); err != nil {
 			log.Println("failed to get data from redis:", err.Error())
 			response := map[string]string{"error": err.Error()}
-			
+
 			// Return a 500 Internal Server Error
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusInternalServerError)
@@ -137,7 +137,7 @@ func (a *App) getMethod(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Println("failed to get result:", err.Error())
 			response := map[string]string{"error": err.Error()}
-			
+
 			// Return a 500 Internal Server Error
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusInternalServerError)
